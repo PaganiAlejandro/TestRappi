@@ -18,17 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import software.rappier.testrappier.BuildConfig;
-import software.rappier.testrappier.R;
-import software.rappier.testrappier.model.Movie;
-import software.rappier.testrappier.model.MoviePageResult;
-import software.rappier.testrappier.network.GetMovieDataService;
-import software.rappier.testrappier.network.RetrofitInstance;
-import software.rappier.testrappier.ui.adapter.MovieAdapter;
-import software.rappier.testrappier.ui.data.FavoriteContract;
-import software.rappier.testrappier.ui.utils.EndlessRecyclerViewScrollListener;
-import software.rappier.testrappier.ui.utils.MovieClickListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +27,14 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import software.rappier.testrappier.R;
+import software.rappier.testrappier.model.Movie;
+import software.rappier.testrappier.model.MoviePageResult;
+import software.rappier.testrappier.network.GetMovieDataService;
+import software.rappier.testrappier.network.RetrofitInstance;
+import software.rappier.testrappier.ui.adapter.MovieAdapter;;
+import software.rappier.testrappier.ui.utils.EndlessRecyclerViewScrollListener;
+import software.rappier.testrappier.ui.utils.MovieClickListener;
 
 public class MainActivity extends AppCompatActivity {
     public static final String API_KEY = "7e414f14bfadabe518660083ae7fa77d";
@@ -97,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         //SortID 1 -> Popularity
         //SortID 2 -> Top rated
+        //SortID 3 -> Upcoming
         switch (item.getItemId()) {
             case R.id.sort_by_popularity:
                 currentSortMode = 1;
@@ -104,30 +102,14 @@ public class MainActivity extends AppCompatActivity {
             case R.id.sort_by_top:
                 currentSortMode = 2;
                 break;
-            case R.id.sort_by_favorites:
+            case R.id.sort_by_upcoming:
                 currentSortMode = 3;
                 break;
         }
-        if(currentSortMode != 3){
-            loadPage(FIRST_PAGE);
-        } else {
-            ArrayList<Movie> favoriteMovies = getFavoriteMovies();
 
-            movieAdapter = new MovieAdapter(favoriteMovies, new MovieClickListener() {
-                @Override
-                public void onMovieClick(Movie movie) {
-                    Intent intent = new Intent(MainActivity.this, MovieActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("movie", movie);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-            });
-            recyclerView.setAdapter(movieAdapter);
-        }
+        loadPage(FIRST_PAGE);
 
         return super.onOptionsItemSelected(item);
-
     }
 
     private void loadPage(final int page) {
@@ -139,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 call = movieDataService.getTopRatedMovies(page, API_KEY);
+                break;
+            case 3:
+                call = movieDataService.getUpcomingMovies(page, API_KEY);
                 break;
         }
 
@@ -192,39 +177,6 @@ public class MainActivity extends AppCompatActivity {
         return "https://image.tmdb.org/t/p/" +
                 "w500" +
                 imagePath;
-    }
-
-    private ArrayList<Movie> getFavoriteMovies(){
-        ArrayList<Movie> movieList = new ArrayList<>();
-        Cursor cursor = getContentResolver()
-                .query(FavoriteContract.FavoriteEntry.CONTENT_URI,null,null,null,null);
-
-        assert cursor != null;
-        if (cursor.moveToFirst()){
-            do{
-                Movie movie = new Movie();
-
-                int id = cursor.getInt(cursor.getColumnIndex("movie_id"));
-                String movieTitle = cursor.getString(cursor.getColumnIndex("movie_title"));
-                String movieOverview = cursor.getString(cursor.getColumnIndex("movie_overview"));
-                double movieVoteAverage = cursor.getDouble(cursor.getColumnIndex("movie_vote_average"));
-                String movieReleaseDate = cursor.getString(cursor.getColumnIndex("movie_release_date"));
-                String moviePosterPath = cursor.getString(cursor.getColumnIndex("movie_poster_path"));
-
-                movie.setId(id);
-                movie.setTitle(movieTitle);
-                movie.setOverview(movieOverview);
-                movie.setVoteAverage(movieVoteAverage);
-                movie.setReleaseDate(movieReleaseDate);
-                movie.setPosterPath(moviePosterPath);
-
-                movieList.add(movie);
-
-            }while(cursor.moveToNext());
-        }
-        cursor.close();
-
-        return movieList;
     }
 
     private boolean isNetworkAvailable() {

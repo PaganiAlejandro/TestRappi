@@ -32,11 +32,6 @@
                 android:value=".ui.activity.MainActivity" />
         </activity>
 
-        <provider
-            android:name=".ui.data.FavoriteProvider"
-            android:authorities="software.rappier.testrappier"
-            android:exported="false" />
-
         <activity
             android:name=".ui.activity.ReviewActivity"
             android:theme="@style/AppTheme"/>

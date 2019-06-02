@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">CineOne</string>
+    <string name="app_name">TEST RAPPI</string>
     <string name="something_went_wrong">Something went wrong…Please try again later!</string>
     <string name="movie_poster">Movie Poster</string>
     <string name="sort_movies">Sort</string>
-    <string name="sort_popularity">Popularity</string>
-    <string name="sort_top_rated">Top rated</string>
+    <string name="sort_popularity">Popular</string>
+    <string name="sort_top_rated">Top Rated</string>
     <string name="movie_overview_label">About the movie</string>
     <string name="trailer">Media</string>
-    <string name="sort_by_favorites">Favorites</string>
+    <string name="sort_by_upcoming">Upcoming</string>
     <string name="read_user_reviews">Read user reviews</string>
     <string name="movie_removed_from_favorites">Movie removed from favorites</string>
     <string name="movie_added_to_favorites">Movie added to favorites</string>

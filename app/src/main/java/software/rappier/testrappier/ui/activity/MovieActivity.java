@@ -1,15 +1,11 @@
 package software.rappier.testrappier.ui.activity;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import software.rappier.testrappier.R;
 import software.rappier.testrappier.model.Movie;
 import software.rappier.testrappier.model.MovieReview;
@@ -29,18 +35,7 @@ import software.rappier.testrappier.network.GetMovieTrailerService;
 import software.rappier.testrappier.network.RetrofitInstance;
 import software.rappier.testrappier.ui.adapter.ReviewAdapter;
 import software.rappier.testrappier.ui.adapter.TrailerAdapter;
-import software.rappier.testrappier.ui.data.FavoriteContract;
 import software.rappier.testrappier.ui.utils.TrailerClickListener;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static software.rappier.testrappier.ui.activity.MainActivity.API_KEY;
 import static software.rappier.testrappier.ui.activity.MainActivity.movieImagePathBuilder;
@@ -52,7 +47,6 @@ public class MovieActivity extends AppCompatActivity {
     @BindView(R.id.movie_activity_overview) TextView mMovieOverview;
     @BindView(R.id.movie_activity_release_date) TextView mMovieReleaseDate;
     @BindView(R.id.movie_activity_rating) TextView mMovieRating;
-    @BindView(R.id.movie_activity_favorite) FloatingActionButton mFavoriteButton;
     @BindView(R.id.movie_activity_trailer_label) TextView mMovieTrailerLabel;
     @BindView(R.id.movie_activity_read_reviews) TextView mReviewsLabel;
 
@@ -97,7 +91,6 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     private void populateActivity(Movie mMovie){
-        updateFabDrawable();
         Picasso.with(this).load(movieImagePathBuilder(mMovie.getPosterPath())).into(mMoviePoster);
         mMovieTitle.setText(mMovie.getTitle());
         mMovieOverview.setText(mMovie.getOverview());
@@ -166,38 +159,7 @@ public class MovieActivity extends AppCompatActivity {
         });
     }
 
-    @OnClick(R.id.movie_activity_favorite)
-    public void setFavoriteMovie(){
-        ContentValues values = new ContentValues();
-        values.put(FavoriteContract.FavoriteEntry.MOVIE_ID, mMovie.getId());
-        values.put(FavoriteContract.FavoriteEntry.MOVIE_TITLE, mMovie.getTitle());
-        values.put(FavoriteContract.FavoriteEntry.MOVIE_OVERVIEW, mMovie.getOverview());
-        values.put(FavoriteContract.FavoriteEntry.MOVIE_VOTE_COUNT, mMovie.getVoteCount());
-        values.put(FavoriteContract.FavoriteEntry.MOVIE_VOTE_AVERAGE, mMovie.getVoteAverage());
-        values.put(FavoriteContract.FavoriteEntry.MOVIE_RELEASE_DATE, mMovie.getReleaseDate());
-        values.put(FavoriteContract.FavoriteEntry.MOVIE_POSTER_PATH, mMovie.getPosterPath());
 
-        if(!isFavorited(mMovie.getId())){
-            getContentResolver().
-                    insert(FavoriteContract.FavoriteEntry.CONTENT_URI, values);
-            Toast.makeText(this, R.string.movie_added_to_favorites, Toast.LENGTH_SHORT).show();
-        }else{
-            getContentResolver().delete(FavoriteContract.FavoriteEntry.CONTENT_URI,
-                    "movie_id=?",
-                    new String[]{String.valueOf(mMovie.getId())});
-            Toast.makeText(this, R.string.movie_removed_from_favorites, Toast.LENGTH_SHORT).show();
-        }
-
-        updateFabDrawable();
-
-
-    }
-
-    private boolean isFavorited(int id){
-        Cursor cursor = getContentResolver()
-                .query(FavoriteContract.FavoriteEntry.buildFavoriteUriWithId(id),null,null,null,null);
-        return cursor.getCount()> 0;
-    }
 
     @OnClick(R.id.movie_activity_read_reviews)
     public void readReviews(){
@@ -214,14 +176,6 @@ public class MovieActivity extends AppCompatActivity {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    private void updateFabDrawable(){
-        if(isFavorited(mMovie.getId())){
-            mFavoriteButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_star_border_white_36dp));
-        } else{
-            mFavoriteButton.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_star_white_36dp));
-        }
     }
 
     @Override
