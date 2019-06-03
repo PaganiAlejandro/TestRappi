@@ -18,15 +18,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Cache;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import software.rappier.testrappier.R;
 import software.rappier.testrappier.model.Movie;
 import software.rappier.testrappier.model.MoviePageResult;
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private Call<MoviePageResult> call;
     private List<Movie> movieResults;
     private MovieAdapter movieAdapter;
+    int cacheSize = 10 * 1024 * 1024; // 10 MiB
 
     @BindView(R.id.rv_movies) RecyclerView recyclerView;
     @BindView(R.id.tv_no_internet_error) ConstraintLayout mNoInternetMessage;
@@ -113,7 +121,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadPage(final int page) {
-        GetMovieDataService movieDataService = RetrofitInstance.getRetrofitInstance().create(GetMovieDataService.class);
+
+        //CACHE
+        Cache cache = new Cache(getCacheDir(), cacheSize);
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .cache(cache)
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Interceptor.Chain chain)
+                            throws IOException {
+                        Request request = chain.request();
+                        if (!isNetworkAvailable()) {
+                            int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale \
+                            request = request
+                                    .newBuilder()
+                                    .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                                    .build();
+                        }
+                        return chain.proceed(request);
+                    }
+                })
+                .build();
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("http://api.themoviedb.org/3/")
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create());
+
+        Retrofit retrofit = builder.build();
+        GetMovieDataService movieDataService = retrofit.create(GetMovieDataService.class);
+
+        //old call to service
+        //GetMovieDataService movieDataService = RetrofitInstance.getRetrofitInstance().create(GetMovieDataService.class);
 
         switch(currentSortMode){
             case 1:
@@ -182,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        assert connectivityManager != null;
+        //assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
