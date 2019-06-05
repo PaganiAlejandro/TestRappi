@@ -10,6 +10,7 @@ import software.rappier.testrappier.model.Movie;
 import software.rappier.testrappier.ui.utils.MovieClickListener;
 import software.rappier.testrappier.ui.viewholder.MovieViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,7 +18,7 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
     private final MovieClickListener movieClickListener;
-    private final List<Movie> movieList;
+    private List<Movie> movieList;
 
     public MovieAdapter(List<Movie> movieList, MovieClickListener movieClickListener) {
         this.movieList = movieList;
@@ -44,5 +45,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     @Override
     public void onViewRecycled(MovieViewHolder holder) {
         super.onViewRecycled(holder);
+    }
+
+    //Filter
+    public void setSearchOperation(List<Movie> newList){
+        movieList = new ArrayList<Movie>();
+        movieList.addAll(newList);
+        notifyDataSetChanged();
     }
 }

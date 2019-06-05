@@ -1,5 +1,7 @@
 package software.rappier.testrappier.ui.activity;
 
+import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -9,17 +11,24 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
     private List<Movie> movieResults;
     private MovieAdapter movieAdapter;
     int cacheSize = 10 * 1024 * 1024; // 10 MiB
+    android.support.v7.widget.SearchView searchView;
 
     @BindView(R.id.rv_movies) RecyclerView recyclerView;
     @BindView(R.id.tv_no_internet_error) ConstraintLayout mNoInternetMessage;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             mNoInternetMessage.setVisibility(View.VISIBLE);
         }
 
+        // Paginado
         GridLayoutManager manager = new GridLayoutManager(this, 2);
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -79,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(manager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if ((page + 1) <= totalPages && currentSortMode != 3) {
+                if ((page + 1) <= totalPages) {
                     loadPage(page + 1);
                 }
             }
@@ -93,8 +103,34 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sort_menu, menu);
+        getMenuInflater().inflate(R.menu.sort_menu, menu);
+
+        //Filter
+        SearchManager searchManager= (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView= (SearchView)menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint(getString(R.string.action_search));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText = newText.toLowerCase();
+                List<Movie> myNewListt = new ArrayList<>();
+                for (Movie movie:movieResults) {
+                    String movieTitle = movie.getTitle().toLowerCase();
+                     if (movieTitle.contains(newText) ){
+                          myNewListt.add(movie);
+                     }
+                }
+                movieAdapter.setSearchOperation(myNewListt);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -124,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
 
         //CACHE
         Cache cache = new Cache(getCacheDir(), cacheSize);
-
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .cache(cache)
                 .addInterceptor(new Interceptor() {
@@ -196,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
                         movieAdapter.notifyItemInserted(movieResults.size() - 1);
                     }
                 }
-
             }
 
             @Override
@@ -222,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        //assert connectivityManager != null;
+        assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
@@ -236,14 +270,14 @@ public class MainActivity extends AppCompatActivity {
 
         if ( String.valueOf(info_wifi.getState()).equals("CONNECTED")){
             value = true;
-            Toast.makeText(this,"Conectado a WIFI",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Connected to WIFI",Toast.LENGTH_SHORT).show();
         }else{
             if ( String.valueOf(info_datos.getState()).equals("CONNECTED")){
                 value = true;
-                Toast.makeText(this,"Conectado a DATOS",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Connected to DATA",Toast.LENGTH_SHORT).show();
             }else{
                 value = false;
-                Toast.makeText(this,"No tiene coneccion",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"It has no connection",Toast.LENGTH_SHORT).show();
             }
         }
         return value;
@@ -254,5 +288,4 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(getIntent());
     }
-
 }
