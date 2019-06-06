@@ -64,18 +64,12 @@ public class MainActivity extends AppCompatActivity {
     android.support.v7.widget.SearchView searchView;
 
     @BindView(R.id.rv_movies) RecyclerView recyclerView;
-    @BindView(R.id.tv_no_internet_error) ConstraintLayout mNoInternetMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        if(!isConected()){
-            recyclerView.setVisibility(View.GONE);
-            mNoInternetMessage.setVisibility(View.VISIBLE);
-        }
 
         // Paginado
         GridLayoutManager manager = new GridLayoutManager(this, 2);
@@ -256,36 +250,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    private boolean isConected(){
-        boolean value = false;
-
-        ConnectivityManager connectivity  = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info_wifi = connectivity.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo info_datos = connectivity.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-
-        if ( String.valueOf(info_wifi.getState()).equals("CONNECTED")){
-            value = true;
-            Toast.makeText(this,"Connected to WIFI",Toast.LENGTH_SHORT).show();
-        }else{
-            if ( String.valueOf(info_datos.getState()).equals("CONNECTED")){
-                value = true;
-                Toast.makeText(this,"Connected to DATA",Toast.LENGTH_SHORT).show();
-            }else{
-                value = false;
-                Toast.makeText(this,"It has no connection",Toast.LENGTH_SHORT).show();
-            }
-        }
-        return value;
-    }
-
-    @OnClick(R.id.tv_no_internet_error_refresh)
-    public void refreshActivity(){
-        finish();
-        startActivity(getIntent());
     }
 }

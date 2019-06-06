@@ -112,6 +112,7 @@ public class MovieActivity extends AppCompatActivity {
             mTrailerAdapter = new TrailerAdapter(mMovieTrailers, new TrailerClickListener() {
                 @Override
                 public void onMovieTrailerClick(MovieTrailer mMovieTrailer) {
+                    String mPathTrailer = "http://www.youtube.com/watch?v=" + mMovieTrailer.getKey();
                     Intent mTrailerIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + mMovieTrailer.getKey()));
                     startActivity(mTrailerIntent);
                 }

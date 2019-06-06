@@ -1,17 +1,91 @@
-# TEST RAPPI
+#   TEST RAPPI 
 
-[![N|Solid](data:image/jpeg;base64,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)](https://nodesource.com/products/nsolid)
+## Las capas de la aplicación y qué clases pertenecen a cual.
+#####  Capa de modelo
+Las clases dentro de esta capa son:
+Movie, MoviePageResult,MovieReview,MovieReviewPageresult,MovieTrailer, MovieTrailerPageResult
 
-Una vez acabada la prueba describa en un readme brevemente:
+##### Capa de Red
+Las clases dentro de esta capa son:
+GetMovieDataService, GetMovieReviewService, GetMovieTrailerService y RetrofitInstance.
 
-1. Las capas de la aplicación (por ejemplo capa de persistencia, vistas, red, negocio, etc) y qué clases pertenecen a cual.
+##### Capa de Vista
+Las clases dentro de esta capa son:
+MainActivity, MovieActivity, ReviewActivity, MovieAdapter,ReviewAdapter,TrailerAdapter, MovieViewHolder,ReviewViewHolder,TrailerViewHolder
 
-2. La responsabilidad de cada clase creada.
+## Responsabilidad de cada clase creada.
+
+##### Package network:
+La comunicación con la Api se llevó a cabo por medio de la libreria Retrofit. Retrofit es un cliente HTTP de tipo seguro para Android y Java, que  hace sencillo conectar a un servicio web REST traduciendo la API a interfaces Java. Hace sencillo consumir datos JSON, que después son parseados en Objetos Java (Plain Old Java Objects, POJOs).
+Retrofit no tiene un convertidor JSON integrado para convertir de objetos JSON a Java. En su lugar, viene con soporte para librerías de convertidor JSON, como puede ser Gson, que es la que se utilizó en este caso.
+Las interfaces GetMovieDataService, GetMovieReviewService y GetMovieTrailerService son las encargadas de exponer el llamado a los métodos Get de la API.
+La clase RetrofitInstance es la encargada de generar la instancia de Retrofit, debido que  para emitir peticiones de red a una API RESTFUL con Retrofit, necesitamos crear una instancia usando la clase Retrofit Builder y configurarla con una URL base. 
+
+##### Package model:
+Cada una de las clases contenidas en este package son Pojos que mapean directamente con los datos que la Api nos provee en formato Json y que con la ayuda de Gson son transformados a objetos.
+
+##### Package ui:
+El contenido de este paquete, son todas clases e interfaces que ayudan a darle el comportamiento a la vista.
+
+**MainActivity**: Es la clase/actividad principal. La misma es la encargada de mostrar las listas de películas seleccionadas, de filtrar las películas, de realizar las peticiones a la Api, de cachear los datos.
+
+**MovieActivity**: Actividad encargada de mostrar los detalles de una película seleccionada (Poster, Titulo, Detalle, Fecha de lanzamiento, Clasificación, Opiniones y Trailers).
+
+**ReviewActivity**: Actividad encargada de mostrar las diferentes opiniones.
+
+En cada una de las actividades se hizo uso de ReciclerView, para crear un adaptador para cada RecyclerView, se debe extender de RecyclerView.Adapter. Éste adaptador sigue el patrón de diseño view holder, que significa que define una clase interna que extienda de RecyclerView.ViewHolder. Éste patrón minimiza el número de llamadas al costoso método findViewById. 
+Por este motivo tenemos 3 clases Adapter que extienden de RecyclerView.Adapter (**MovieAdapter, ReviewAdapter y TrailerAdapter**)
+Y 3 clases que extienden de RecyclerView.ViewHolder  (**MoviewViewHolder, ReviewViewHolder y TrailerViewHolder**).
+
+**MovieClickListener** es una interfaz para la escucha de los click. Con esta interfaz puedo configurar una clase de titular de vista como un detector de clics y pasar una instancia de mi interfaz. Luego configuro la vista como un detector de clics y llamo a mi interfaz con la posición apropiada.
+
+**TrailerClickListener** la funcion de esta interfaz, es la misma que la anterior.
+
+**EndlessRecyclerViewScrollListener** en la clase que contiene el mecanismo para el paginado  que permite ir obteniendo desde la API, los diferentes elementos a mostrar a medida que el usuario vaya solicitándolos al hacer scroll en la lista principal de películas.
+
+## En qué consiste el principio de responsabilidad única? Cuál es su propósito?
+
+El principio de responsabilidad única consiste en mantener una única responsabilidad en un módulo, o que es lo mismo debe de tener una única razón para cambiar. Mas de una responsabilidad hace que el código sea difícil de leer, de testear y mantener. Es decir, hace que el código sea menos flexible, mas rígido.
+
+Este principio es el primero del acrónimo SOLID, para la programación orientada a objetos.
+
+Por desgracia, las necesidades cambian y los usuarios también, es por eso que el primer valor del software es la facilidad al cambio. Es más importante permitir que el software sea lo suficientemente flexible como para poder adaptarse a nuevos usuarios y necesidades que satisfacerlas en un momento concreto. Sin este valor, el secundario es difícil de acometer a largo plazo.
+
+El propósito de este principio es permitir que nuestro código sea mas flexible al cambio y por tanto nos ayuda a mantener el primer valor del software, el de la facilidad al cambio, alto.
+
+[![N|Solid](https://uploads.toptal.io/blog/image/91846/toptal-blog-image-1449597577848-60a7b4874d676e754260b05866cf967f.jpg)](https://nodesource.com/products/nsolid)
+
+## Qué características tiene, según su opinión, un “buen” código o código limpio?
+
+Actualmente en la empresa donde estoy, estamos aplicando esta filosofía, de código limpio y en mi opinión, no es una sola cosa la que debemos tener en cuenta, si no que son varios aspectos. A continuación enumero algunos.
+1.	Usa nombres con significado.
+El  código tiene que poder leerse como si fuera un libro. Para ello, los nombres de las variables, métodos, clases tiene que seleccionarse con cuidado para que den significado a lo que estamos intentando “contar” en nuestro programa.
+2.	Haz unidades de código pequeñas.
+Las clases y métodos cortos simplifican la compresión del código y lo hacen mas mantenible.
+3.	Las unidades de código deben hacer una única cosa
+Muy relacionado al punto anterior y con el principio de responsabilidad única. Centrándonos en una clase por ejemplo, si esta hace varias cosas, tarde o temprano nos encontraremos con que la clase es propensa a cambios, nos cuesta mas testearla, el código crecerá de forma descontrolada y nos será mas dificil agregar nueva funcionalidad.
+4.	Las funciones deben tener un número limitado de argumentos
+Los parámetros añaden una gran cantidad de carga conceptual que dificulta la lectura. Ademas dificultan el testing.
+5.	Sigue el principio DRY: Don’t Repeat Yourself 
+Repetir código es una acción bastante peligrosa que nos causará problemas tarde o temprano, y seguir este principio de diseño de software te evitará algunos quebraderos de cabeza.
+6.	Evita utilizar comentarios siempre que sea posible
+"Un comentario es un síntoma de no haber conseguido escribir un código claro", Robert C.Martin. Si necesitas añadir un comentario, es porque el código no es autoexplicativo, lo que iría en contra del primer punto.
+7.	Utilizar un formato único en tu código
+Cualquier formato, por extraño que sea, es mejor que ninguno en absoluto. Dará coherencia y estructura al código, y unas pautas a seguir por todos los desarrolladores (Densida vertical, Ubicación de los componentes, Numero de caracteres por línea, etc). 
+8.	Abstrae tus datos: no uses getters y setters indiscriminadamente
+Una práctica muy común en lenguajes como Java es la de crear un objeto e inmediatamente autogenerar todos sus getters y sus setters para tener acceso y capacidad de modificación de su estado. Aquí es importante identificar si nuestra clase es una simple estructura de datos o es un objeto con comportamiento. Los objetos esconderán sus datos mediante abstracciones y expondrán funciones para operar con ellos.
+9.	Ley de Demeter
+Nuestro objeto no debería conocer las entrañas de otros objetos con los que interactúa. Es un mecanismo de detección de acoplamiento, y nos viene a decir que nuestro objeto no debería conocer las entrañas de otros objetos con los que interactúa. Si queremos que haga algo, debemos pedírselo directamente en vez de navegar por su estructura.
+10.	Establece fronteras
+Las fronteras nos permiten establecer límites entre nuestro código y ese código que no controlamos. Existen muchos casos en nuestros software en los que no tenemos control sobre el código que ejecutamos, ya sea por ejemplo cuando utilizamos librerías de terceros o frameworks.
+11.	Escribe Tests
+No hay mucho que contar aquí. Los tests ayudan a definir y validar la funcionalidad del software que estés implementando.
 
 
+Todas estas ideas hay que estudiarlas y utilizarlas cuando tenga sentido. Pero si las aplicamos, conseguiremos que nuestro código sea más fácil de leer y de mantener, tendremos un “código limpio”.
 
-Responda y escriba dentro del Readme con las siguientes preguntas:
 
-1. En qué consiste el principio de responsabilidad única? Cuál es su propósito?
+## Aclaraciones.
+Debido al poco tiempo que dispongo en mis días actualmente, el test no quedo como me hubiera gustado para dar una mejor impresion de lo que uno puede llegar a lograr como desarrollador Android. Me hubiese gustado poder aplicar la "Arquitectura Clean" para enviar una app de calidad. Escribir código de calidad para aplicaciones de complejidad media y alta requiere un esfuerzo y experiencia considerables. Una aplicación no solo debe cumplir con los requisitos del cliente, sino que también debe ser flexible, comprobable y fácil de mantener.
 
-2. Qué características tiene, según su opinión, un “buen” código o código limpio?
+[![N|Solid](https://rubygarage.s3.amazonaws.com/uploads/article_image/file/2060/Artboard_15587.png)](https://nodesource.com/products/nsolid)
